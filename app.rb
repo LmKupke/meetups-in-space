@@ -35,3 +35,10 @@ get '/meetups' do
   # binding.pry
   erb :'meetups/index'
 end
+
+get '/meetups/:id' do
+  id = params['id']
+  @meetup = Meetup.find(id)
+
+  erb :'/meetups/show'
+end
