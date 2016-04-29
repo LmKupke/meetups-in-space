@@ -1,1 +1,12 @@
 <h1>Meetups</h1>
+
+<% @meetups.each do |m| %>
+  <div class="meetup">
+    <ul>
+      <li>Title: <%= m.name %></li>
+      <li>Location: <%= m.location %></li>
+      <li>Description: <%= m.description %></li>
+      <li>Creator: <%= m.user.username %></li>
+    </ul>
+  </div>
+<% end %>
