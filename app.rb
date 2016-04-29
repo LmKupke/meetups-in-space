@@ -43,6 +43,8 @@ end
 get '/meetups/:id' do
   id = params['id']
   @meetup = Meetup.find(id)
+  @attendees = Usermeetup.where(meetup: id)
+  # binding.pry
   erb :'meetups/show'
 end
 
@@ -60,7 +62,8 @@ post '/meetups' do
     erb :'/meetups/new'
   else
     @meetup = Meetup.create(name: @name, location: @location, description: @description, user: @current_user)
-    
+    Usermeetup.create(meetup: @meetup, user: @meetup.user)
+    @attendees = Usermeetup.where(meetup: @meetup)
     erb :"meetups/show"
   end
 end

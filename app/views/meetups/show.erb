@@ -4,3 +4,10 @@
   <li class="location"> <%= @meetup.location %></li>
   <li class="user"> <%= @meetup.user.username%></li>
 </ul>
+
+<h2>Attendees</h2>
+<ul class="attendees">
+  <% @attendees.each do |attendee| %>
+    <li><img src="<%= attendee.user.avatar_url %>" height="42" width="42"> <%= attendee.user.username %></li>
+  <% end %>
+</ul>

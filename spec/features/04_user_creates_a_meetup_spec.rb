@@ -18,6 +18,7 @@ feature "Create a new meetup" do
     expect(page).to have_content("Titus Sparrow Park Boston,MA")
     expect(page).to have_content("Having a bunch of people over for croquet!")
     expect(page).to have_content("jarlax1")
+
   end
 
   scenario "Non-signed in User submits" do
