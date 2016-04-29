@@ -31,7 +31,7 @@ get '/sign_out' do
 end
 
 get '/meetups' do
-  @meetups = Meetup.all
+  @meetups = Meetup.order(:name)
   # binding.pry
   erb :'meetups/index'
 end
