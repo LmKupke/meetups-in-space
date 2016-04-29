@@ -1,0 +1,23 @@
+<% if @error != nil %>
+  <%= @error %>
+<% end %>
+
+<fieldset>
+  <form class="create_meetup" action="/meetups" method="post">
+      <legend>Create Meetup:</legend>
+      <table>
+        <tr>
+          <td><label for="name">Name:</label></td>
+          <td><input type="text" name="name" id="name" value="<%= @name %>" /></td>
+        </tr>
+        <tr>
+          <td><label for="location">Location:</label></td>
+          <td><input type="text" name="location" id="location" value="<%= @location %>" /></td>
+        <tr>
+          <td><label for="description">Description:</label></td>
+          <td><input type="text" name="description" id="description" value="<%= @description %>"/></td>
+        </tr>
+      </table>
+    <input type="submit" name="submit" value="submit">
+  </form>
+</fieldset>

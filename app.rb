@@ -32,13 +32,35 @@ end
 
 get '/meetups' do
   @meetups = Meetup.order(:name)
-  # binding.pry
+
   erb :'meetups/index'
+end
+
+get '/meetups/new' do
+  erb :'meetups/new'
 end
 
 get '/meetups/:id' do
   id = params['id']
   @meetup = Meetup.find(id)
+  erb :'meetups/show'
+end
 
-  erb :'/meetups/show'
+post '/meetups' do
+  current_user
+  @error = nil
+  @name = params[:name]
+  @location = params[:location]
+  @description = params[:description]
+
+  # binding.pry
+
+  if @current_user == nil
+    @error = "You will need to sign in before you can create a Meetup!"
+    erb :'/meetups/new'
+  else
+    @meetup = Meetup.create(name: @name, location: @location, description: @description, user: @current_user)
+    
+    erb :"meetups/show"
+  end
 end
