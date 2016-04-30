@@ -41,10 +41,10 @@ get '/meetups/new' do
 end
 
 get '/meetups/:id' do
+  current_user
   id = params['id']
   @meetup = Meetup.find(id)
   @attendees = Usermeetup.where(meetup: id)
-  # binding.pry
   erb :'meetups/show'
 end
 
@@ -55,15 +55,31 @@ post '/meetups' do
   @location = params[:location]
   @description = params[:description]
 
-  # binding.pry
-
   if @current_user == nil
     @error = "You will need to sign in before you can create a Meetup!"
     erb :'/meetups/new'
+  elsif @name.empty? || @location.empty? || @description.empty?
+    @error = 'Please fill in all form fields'
+    erb :'meetups/new'
   else
     @meetup = Meetup.create(name: @name, location: @location, description: @description, user: @current_user)
     Usermeetup.create(meetup: @meetup, user: @meetup.user)
     @attendees = Usermeetup.where(meetup: @meetup)
-    erb :"meetups/show"
+    redirect "/meetups/#{@meetup.id}"
   end
+end
+
+post '/meetups/:id/join' do
+  current_user
+  id = params[:id]
+
+  if @current_user.nil?
+    flash[:notice] = "Please sign in before joining meetups"
+  else
+    @meetup = Meetup.find(id)
+    Usermeetup.create(user: @current_user, meetup: @meetup)
+    flash[:notice] = "You have joined the meetup."
+  end
+
+  redirect "/meetups/#{id}"
 end

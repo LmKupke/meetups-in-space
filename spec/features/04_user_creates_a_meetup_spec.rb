@@ -29,6 +29,7 @@ feature "Create a new meetup" do
     fill_in('description', with: "Having a bunch of people over for croquet!")
     click_on "submit"
 
+    
     expect(page).to have_content("You will need to sign in before you can create a Meetup!")
 
   end
