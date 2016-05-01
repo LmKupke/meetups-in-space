@@ -5,6 +5,11 @@
   <li class="user"> <%= @meetup.user.username%></li>
 </ul>
 
+<% if @current_user == @meetup.user %>
+  <a href="/meetups/<%= @meetup.id %>/edit">Edit Meetup</a>
+<% end %>
+
+
 <h2>Attendees</h2>
 <ul class="attendees">
   <% @attendees.each do |attendee| %>

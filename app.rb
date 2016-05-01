@@ -32,12 +32,38 @@ end
 
 get '/meetups' do
   @meetups = Meetup.order(:name)
-
   erb :'meetups/index'
 end
 
 get '/meetups/new' do
+  @edit = false
   erb :'meetups/new'
+end
+
+get '/meetups/:id/edit' do
+  current_user
+  id = params['id']
+  @meetup = Meetup.find(id)
+  @edit = true
+  erb :'meetups/new'
+end
+
+patch '/meetups/:id/edit' do
+  id = params['id']
+  @name = params[:name]
+  @location = params[:location]
+  @description = params[:description]
+  @meetup = Meetup.find(id)
+  @meetup.update(name: @name, location: @location, description: @description)
+  if @meetup.valid? == true
+    @meetup.save
+    redirect "/meetups/#{@meetup.id}"
+  else
+    @errors = @meetup.errors.full_messages
+    @edit = true
+    erb :new
+  end
+
 end
 
 get '/meetups/:id' do
@@ -50,19 +76,23 @@ end
 
 post '/meetups' do
   current_user
-  @error = nil
+  @edit = false
+  @errors = nil
   @name = params[:name]
   @location = params[:location]
   @description = params[:description]
 
+  @meetup = Meetup.new(name: @name, location: @location, description: @description, user: @current_user)
+
+
   if @current_user == nil
-    @error = "You will need to sign in before you can create a Meetup!"
+    @errors = "You will need to sign in before you can create a Meetup!"
     erb :'/meetups/new'
-  elsif @name.empty? || @location.empty? || @description.empty?
-    @error = 'Please fill in all form fields'
+  elsif @meetup.valid? == false
+    @errors = @meetup.errors.full_messages
     erb :'meetups/new'
   else
-    @meetup = Meetup.create(name: @name, location: @location, description: @description, user: @current_user)
+    @meetup.save
     Usermeetup.create(meetup: @meetup, user: @meetup.user)
     @attendees = Usermeetup.where(meetup: @meetup)
     redirect "/meetups/#{@meetup.id}"

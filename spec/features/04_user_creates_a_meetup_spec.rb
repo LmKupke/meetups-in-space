@@ -12,7 +12,7 @@ feature "Create a new meetup" do
     fill_in('name', with: "Croquet")
     fill_in('location', with: "Titus Sparrow Park Boston,MA")
     fill_in('description', with: "Having a bunch of people over for croquet!")
-    click_on "submit"
+    click_on "Create Meetup"
 
     expect(page).to have_content("Croquet")
     expect(page).to have_content("Titus Sparrow Park Boston,MA")
@@ -27,9 +27,9 @@ feature "Create a new meetup" do
     fill_in('name', with: "Croquet")
     fill_in('location', with: "Titus Sparrow Park Boston,MA")
     fill_in('description', with: "Having a bunch of people over for croquet!")
-    click_on "submit"
+    click_on "Create Meetup"
 
-    
+
     expect(page).to have_content("You will need to sign in before you can create a Meetup!")
 
   end

@@ -1,24 +1,53 @@
-<% if @error != nil %>
-  <%= @error %>
+<% if @errors != nil %>
+  <ul class="errors">
+  <% if @errors.class == Array %>
+    <% @errors.each do |value| %>
+      <li><%= value %></li>
+    <% end %>
+  <% else %>
+    <%= @errors %>
+  <% end %>
+  </ul>
 <% end %>
 
 <fieldset>
-  <form class="create_meetup" action="/meetups" method="post">
+  <% if @edit == true %>
+    <form class="update_meetup" action="/meetups/<%=@meetup.id%>/edit" method="post">
+    <input type="hidden" name="_method" value="PATCH">
+    <table>
+      <legend>Update Meetup</legend>
+      <br>
+      <tr>
+        <td><label for="name">Name:</label></td>
+        <td><input type="text" name="name" id="name" value="<%= @meetup.name %>" /></td>
+      </tr>
+      <tr>
+        <td><label for="location">Location:</label></td>
+        <td><input type="text" name="location" id="location" value="<%= @meetup.location %>" /></td>
+      <tr>
+        <td><label for="description">Description:</label></td>
+        <td><input type="text" name="description" id="description" value="<%= @meetup.description %>"/></td>
+      </tr>
+    </table>
+      <input type="submit" id="update_meetup" value="Update Meetup">
+  <% else %>
+    <form class="create_meetup" action="/meetups" method="post">
       <table>
         <legend>Create Meetup</legend>
         <br>
         <tr>
           <td><label for="name">Name:</label></td>
-          <td><input type="text" name="name" id="name" value="<%= @name %>" /></td>
+          <td><input type="text" name="name" id="name" /></td>
         </tr>
         <tr>
           <td><label for="location">Location:</label></td>
-          <td><input type="text" name="location" id="location" value="<%= @location %>" /></td>
+          <td><input type="text" name="location" id="location" /></td>
         <tr>
           <td><label for="description">Description:</label></td>
-          <td><input type="text" name="description" id="description" value="<%= @description %>"/></td>
+          <td><input type="text" name="description" id="description"/></td>
         </tr>
       </table>
-    <input type="submit" name="submit" value="submit">
-  </form>
+        <input type="submit" name="submit" value="Create Meetup">
+  <% end %>
+    </form>
 </fieldset>
